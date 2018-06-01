@@ -15,7 +15,11 @@
     & svg {
         cursor: pointer;
     }
-
+    .cls-1{
+        fill:none;
+        stroke:#3b8ef3;
+        stroke-width:2px;
+    }
     & .content {
         display: flex;
         align-items: center;

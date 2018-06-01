@@ -9,5 +9,4 @@ export const fetchConfig = (method) => {
             'Content-Type':  'application/json',
         },
     };
-
 };
