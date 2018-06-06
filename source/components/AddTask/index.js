@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import * as api from "../../config/api";
+import { schedulerWrapper } from "../HOC/schedulerWrapper";
 
-
-
+@schedulerWrapper
 export default class AddTask extends Component {
     state = {
         taskText: '',
@@ -12,32 +11,39 @@ export default class AddTask extends Component {
         // this._postTask();
     }
 
-     _postTask = () => {
-         const { taskText } = this.state;
-         const sendData = {
-             "message": taskText.toString(),
-         };
+    // _postTask = () => {
+    //     const { taskText } = this.state;
+    //     const sendData = {
+    //         "message": taskText.toString(),
+    //     };
+    //
+    //     this.props._isTaskFetching(true);
+    //
+    //     fetch(api.url, {
+    //         method:  'post',
+    //         body:    JSON.stringify(sendData),
+    //         headers: {
+    //             'Authorization': api.token,
+    //             'Content-Type':  'application/json',
+    //         }})
+    //         .then((response) => response.json())
+    //         .then((data) => console.log('data', data))
+    //         .then(() => this.props._isTaskFetching(false));
+    // };
+    _postTask = () => {
+        const { taskText } = this.state;
+        const { _postTask } = this.props;
 
-         console.log('taskText', sendData);
-         fetch(api.url, {
-             method:  'post',
-             body:    JSON.stringify(sendData),
-             headers: {
-                 'Authorization': api.token,
-                 'Content-Type':  'application/json',
-             }})
-             .then((response) => response.json());
-     };
+        _postTask(taskText);
+    }
 
     _handleChange = (event) => {
         this.setState({
             taskText: event.target.value,
         });
-        console.log('this.s tate', this.state);
     }
 
     _handleSubmit = (event) => {
-        console.log(`A name was submitted:${this.state.taskText}`);
         event.preventDefault();
         this._postTask();
         this.setState({
