@@ -1,60 +1,50 @@
 import React, { Component } from 'react';
+import { func } from 'prop-types';
+
 import { schedulerWrapper } from "../HOC/schedulerWrapper";
 
-@schedulerWrapper
-export default class AddTask extends Component {
+// @schedulerWrapper
+class AddTask extends Component {
+    static propTypes = {
+        _postTask: func.isRequired,
+    };
+
     state = {
         taskText: '',
-    }
+    };
 
-    componentDidMount () {
-        // this._postTask();
-    }
-
-    // _postTask = () => {
-    //     const { taskText } = this.state;
-    //     const sendData = {
-    //         "message": taskText.toString(),
-    //     };
-    //
-    //     this.props._isTaskFetching(true);
-    //
-    //     fetch(api.url, {
-    //         method:  'post',
-    //         body:    JSON.stringify(sendData),
-    //         headers: {
-    //             'Authorization': api.token,
-    //             'Content-Type':  'application/json',
-    //         }})
-    //         .then((response) => response.json())
-    //         .then((data) => console.log('data', data))
-    //         .then(() => this.props._isTaskFetching(false));
-    // };
     _postTask = () => {
         const { taskText } = this.state;
+
+        if (!taskText) {
+            return null;
+        }
+
         const { _postTask } = this.props;
 
         _postTask(taskText);
-    }
+
+        this.setState({
+            taskText: '',
+        });
+    };
 
     _handleChange = (event) => {
         this.setState({
             taskText: event.target.value,
         });
-    }
+    };
 
     _handleSubmit = (event) => {
         event.preventDefault();
         this._postTask();
-        this.setState({
-            taskText: '',
-        });
-    }
+    };
 
     render () {
         return (
             <form onSubmit = { this._handleSubmit }>
                 <input
+                    maxLength = '50'
                     placeholder = 'Новая задача'
                     type = 'text'
                     value = { this.state.taskText }
@@ -65,3 +55,5 @@ export default class AddTask extends Component {
         );
     }
 }
+
+export default schedulerWrapper(AddTask);
